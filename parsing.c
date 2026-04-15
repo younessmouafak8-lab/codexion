@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   test.c                                             :+:      :+:    :+:   */
+/*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ymouafak <ymouafak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/11 18:52:48 by ymouafak          #+#    #+#             */
-/*   Updated: 2026/04/15 14:51:42 by ymouafak         ###   ########.fr       */
+/*   Updated: 2026/04/15 16:27:40 by ymouafak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ arguments_t	*parsing(char **str)
 	{
 		n = atoi(str[i]);
 		if (n <= 0)
-			ft_im_out(args, n);
+			ft_im_out(args, 1);
 		add_num(args, n, i);
 		i++;
 	}
@@ -62,18 +62,4 @@ arguments_t	*parsing(char **str)
 		ft_im_out(args, 0);
 	args->scheduler = str[i];
 	return (args);
-}
-
-int	main(int argc, char **str)
-{
-	arguments_t	*args;
-
-	if (argc != 9)
-	{
-		printf("Not enough arguments :(\n");
-		exit(1);
-	}
-	args = parsing(str + 1);
-	printf("%d\n", args->burnout_time);
-	return (0);
 }

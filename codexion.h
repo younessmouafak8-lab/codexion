@@ -1,3 +1,6 @@
+#if !defined(CODEXION_H)
+#define CODEXION_H
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -18,3 +21,9 @@ typedef struct arguments_s
     char *scheduler;
 
 }arguments_t;
+
+arguments_t	*parsing(char **str);
+void	add_num(arguments_t *args, int n, int index);
+void	ft_im_out(arguments_t *args, int print_n);
+
+#endif
