@@ -9,7 +9,7 @@
 #include <time.h>
 
 
-typedef struct arguments_s
+typedef struct s_arguments
 {
     int num_coders;
     int burnout_time;
@@ -20,10 +20,25 @@ typedef struct arguments_s
     int dong_cooldown;
     char *scheduler;
 
-}arguments_t;
+}t_arguments;
 
-arguments_t	*parsing(char **str);
-void	add_num(arguments_t *args, int n, int index);
-void	ft_im_out(arguments_t *args, int print_n);
+typedef struct s_dongle
+{
+    int id;
+}t_dongle;
+
+typedef struct s_coder
+{
+    int id;
+    t_dongle *left;
+    t_dongle *right;
+
+}t_coder;
+
+
+t_arguments	*parsing(char **str);
+void	add_num(t_arguments *args, int n, int index);
+void	*ft_im_out(t_arguments *args, int print_n);
+long	ft_atoi(const char *str);
 
 #endif

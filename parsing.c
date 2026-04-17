@@ -6,23 +6,23 @@
 /*   By: ymouafak <ymouafak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/11 18:52:48 by ymouafak          #+#    #+#             */
-/*   Updated: 2026/04/15 16:27:40 by ymouafak         ###   ########.fr       */
+/*   Updated: 2026/04/17 11:35:34 by ymouafak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "codexion.h"
 
-void	ft_im_out(arguments_t *args, int print_n)
+void	*ft_im_out(t_arguments *args, int print_n)
 {
 	if (print_n)
 		printf("Poitive integers input only\n");
 	else
 		printf("Wrong scheduler type\n");
 	free(args);
-	exit(1);
+	return (NULL);
 }
 
-void	add_num(arguments_t *args, int n, int index)
+void	add_num(t_arguments *args, int n, int index)
 {
 	int		i;
 	char	*num;
@@ -40,26 +40,26 @@ void	add_num(arguments_t *args, int n, int index)
 	}
 }
 
-arguments_t	*parsing(char **str)
+t_arguments	*parsing(char **str)
 {
 	int			i;
 	int			n;
-	arguments_t	*args;
+	t_arguments	*args;
 
 	i = 0;
-	args = malloc(sizeof(arguments_t));
+	args = malloc(sizeof(t_arguments));
 	if (!args)
 		return (NULL);
 	while (i < 7)
 	{
-		n = atoi(str[i]);
+		n = ft_atoi(str[i]);
 		if (n <= 0)
-			ft_im_out(args, 1);
+			return (ft_im_out(args, 1));
 		add_num(args, n, i);
 		i++;
 	}
 	if (strcmp(str[i], "fifo") && strcmp(str[i], "edf"))
-		ft_im_out(args, 0);
+		return (ft_im_out(args, 1));
 	args->scheduler = str[i];
 	return (args);
 }

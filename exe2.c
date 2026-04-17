@@ -1,40 +1,45 @@
 #include "codexion.h"
 
-typedef struct thread_s
-{
-    int age;
-    char *name;
-}thread;
+typedef struct s_printer {
+    int id;
+}   t_printer;
 
-pthread_mutex_t lock;
-
-void *func(void *p)
-{
-    int *n = (int *)p;
-    pthread_mutex_lock(&lock);
-    (*n)++;
-    printf("im %d ayaya\n", *n);
-    pthread_mutex_unlock(&lock);
-    return NULL;
-}
+typedef struct s_office {
+    int         id;
+    t_printer   *left;
+    t_printer   *right;
+}   t_office;
 
 int main()
 {
-    pthread_mutex_init(&lock, NULL);
-    pthread_t id;
-    pthread_t id2;
-    pthread_t id3;
+    t_printer   printers[3];
+    t_office    offices[3];
 
-    int n1 = 0;
-    int n2 = 1;
-    int n3 = 2;
-    pthread_create(&id, NULL, func, &n1);
+    int i;
 
-    pthread_create(&id2, NULL, func, &n2);
-
-    pthread_create(&id3, NULL, func, &n3);
-    pthread_join(id, NULL);
-    pthread_join(id2, NULL);
-    pthread_join(id3, NULL);
-
+    i = 0;
+    while (i < 3)
+    {
+        printers[i].id = i;
+        offices[i].id = i;
+        // if (i - 1 < 0){
+        //     offices[i].left = &printers[2];
+        //     offices[i].right = &printers[i];
+        // }
+        // else
+        // {
+        //     offices[i].left = &printers[i - 1];
+        //     offices[i].right = &printers[i];
+        // }
+        offices[i].left = &printers[(i - 1 + 3) % 3];
+        offices[i].right = &printers[i];
+        i++;
+    }
+    i = 0;
+    while (i < 3)
+    {
+        printf("Office %d: left=%d  right=%d\n", i+1, offices[i].left->id, offices[i].right->id);
+        i++;
+    }
+    
 }
