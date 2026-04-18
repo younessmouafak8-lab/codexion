@@ -7,6 +7,8 @@
 #include <pthread.h>
 #include <unistd.h>
 #include <time.h>
+#include <sys/time.h>
+#include <unistd.h>
 
 
 typedef struct s_arguments
@@ -32,6 +34,7 @@ typedef struct s_coder
     int id;
     t_dongle *left;
     t_dongle *right;
+    struct timeval start_time;
 
 }t_coder;
 
