@@ -1,4 +1,16 @@
-#if !defined(CODEXION_H)
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   codexion.h                                         :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ymouafak <ymouafak@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2026/04/19 13:14:33 by ymouafak          #+#    #+#             */
+/*   Updated: 2026/04/22 18:39:09 by ymouafak         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#ifndef CODEXION_H
 #define CODEXION_H
 
 #include <stdio.h>
@@ -8,7 +20,6 @@
 #include <unistd.h>
 #include <time.h>
 #include <sys/time.h>
-#include <unistd.h>
 
 
 typedef struct s_arguments
@@ -21,12 +32,14 @@ typedef struct s_arguments
     int compiles_num;
     int dong_cooldown;
     char *scheduler;
-
 }t_arguments;
 
 typedef struct s_dongle
 {
     int id;
+    int is_available;
+    pthread_mutex_t *lock;
+    
 }t_dongle;
 
 typedef struct s_coder
@@ -35,6 +48,8 @@ typedef struct s_coder
     t_dongle *left;
     t_dongle *right;
     struct timeval start_time;
+    pthread_mutex_t *lock_in;
+    t_arguments *args;
 
 }t_coder;
 
