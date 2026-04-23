@@ -6,7 +6,7 @@
 /*   By: ymouafak <ymouafak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/16 13:48:11 by ymouafak          #+#    #+#             */
-/*   Updated: 2026/04/22 14:12:32 by ymouafak         ###   ########.fr       */
+/*   Updated: 2026/04/23 16:52:13 by ymouafak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,8 @@ long	ft_atoi(const char *str)
 		if (res > (unsigned long)(9223372036854775807 - (str[i] - 48)) / 10)
 			return (-(sign > 0));
 		res = res * 10 + str[i] - 48;
+		if (res > 2147483647)
+			return (-1);
 		i++;
 	}
 	if (str[i] != '\0')

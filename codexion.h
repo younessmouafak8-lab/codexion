@@ -6,7 +6,7 @@
 /*   By: ymouafak <ymouafak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/19 13:14:33 by ymouafak          #+#    #+#             */
-/*   Updated: 2026/04/22 18:39:09 by ymouafak         ###   ########.fr       */
+/*   Updated: 2026/04/23 16:13:19 by ymouafak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,8 @@ typedef struct s_dongle
 {
     int id;
     int is_available;
-    pthread_mutex_t *lock;
+    pthread_mutex_t lock;
+    pthread_cond_t condition;
     
 }t_dongle;
 
@@ -58,5 +59,8 @@ t_arguments	*parsing(char **str);
 void	add_num(t_arguments *args, int n, int index);
 void	*ft_im_out(t_arguments *args, int print_n);
 long	ft_atoi(const char *str);
+void	get_dongle(t_dongle *dongle);
+void    release_dongles(t_coder *C);
+void get_dongles(t_coder *c);
 
 #endif

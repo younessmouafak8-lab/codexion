@@ -6,7 +6,7 @@
 /*   By: ymouafak <ymouafak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/17 14:14:58 by ymouafak          #+#    #+#             */
-/*   Updated: 2026/04/22 16:07:01 by ymouafak         ###   ########.fr       */
+/*   Updated: 2026/04/23 16:27:16 by ymouafak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,11 +21,6 @@ long ft_clock(struct timeval start)
 	gettimeofday(&current, NULL);
 	current_time = ((current.tv_sec - start.tv_sec) * 1000) + ((current.tv_usec - start.tv_usec) / 1000);
 	return (current_time);
-}
-
-int get_dongle(t_dongle *dongle)
-{
-	
 }
 
 void actions(t_coder *c, char *str)
@@ -50,10 +45,13 @@ void *test_func(void *ptr)
 	{
 		if (i >= c->args->compiles_num)
 			break;
+		get_dongles(c);
 		actions(c, "has taken a dongle");
+		// get_dongle(c->right);
 		actions(c, "has taken a dongle");
 		actions(c, "is compiling");
 		usleep(c->args->time_tocompile * 1000);
+		release_dongles(c);
 		actions(c, "is debugging");
 		usleep(c->args->time_todebug * 1000);
 		actions(c, "is refactoring");
@@ -99,8 +97,10 @@ int	main(int argc, char **str)
 	pthread_mutex_init(&lock_in, NULL);
 	while (i < args->num_coders)
 	{
-		pthread_mutex_init(dongles[i].lock, NULL);
+		pthread_mutex_init(&dongles[i].lock, NULL);
+		pthread_cond_init(&dongles[i].condition, NULL);
 		dongles[i].id = i;
+		dongles[i].is_available = 1;
 		coders[i].id = i + 1;
 		coders[i].left = &dongles[(i - 1 + args->num_coders) % args->num_coders];
 		coders[i].right = &dongles[i];
