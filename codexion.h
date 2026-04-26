@@ -6,7 +6,7 @@
 /*   By: ymouafak <ymouafak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/19 13:14:33 by ymouafak          #+#    #+#             */
-/*   Updated: 2026/04/26 13:26:56 by ymouafak         ###   ########.fr       */
+/*   Updated: 2026/04/26 19:29:09 by ymouafak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,7 @@ typedef struct s_arguments
     int compiles_num;
     int dong_cooldown;
     char *scheduler;
+    int stop_it;
 }t_arguments;
 
 typedef struct s_dongle
@@ -50,7 +51,7 @@ typedef struct s_coder
     struct timeval start_time;
     pthread_mutex_t *lock_in;
     t_arguments *args;
-
+    long last_compile;
 }t_coder;
 
 

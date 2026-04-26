@@ -6,7 +6,7 @@
 /*   By: ymouafak <ymouafak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/11 18:52:48 by ymouafak          #+#    #+#             */
-/*   Updated: 2026/04/17 11:35:34 by ymouafak         ###   ########.fr       */
+/*   Updated: 2026/04/26 19:43:07 by ymouafak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,5 +61,6 @@ t_arguments	*parsing(char **str)
 	if (strcmp(str[i], "fifo") && strcmp(str[i], "edf"))
 		return (ft_im_out(args, 1));
 	args->scheduler = str[i];
+	args->stop_it = 0;
 	return (args);
 }

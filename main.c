@@ -6,7 +6,7 @@
 /*   By: ymouafak <ymouafak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/17 14:14:58 by ymouafak          #+#    #+#             */
-/*   Updated: 2026/04/26 16:25:46 by ymouafak         ###   ########.fr       */
+/*   Updated: 2026/04/26 19:50:07 by ymouafak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,7 @@ void *test_func(void *ptr)
 		actions(c, "has taken a dongle");
 		actions(c, "is compiling");
 		usleep(c->args->time_tocompile * 1000);
+		c->last_compile = ft_clock(c->start_time);
 		release_dongles(c);
 		actions(c, "is debugging");
 		usleep(c->args->time_todebug * 1000);
@@ -49,6 +50,31 @@ void *test_func(void *ptr)
 	}
 	return (NULL);
 }
+
+void *monitor(void *cds)
+{
+	t_arguments *args;
+	t_coder *coders;
+	int i;
+
+	coders = (t_coder *)cds;
+	args = coders[0].args;
+	while(1){
+		i = 0;
+		while(i < args->num_coders)
+		{
+			if (ft_clock(coders[i].start_time) - coders[i].last_compile > args->burnout_time)
+				args->stop_it = 1;
+			else
+				i++;
+		}
+		if (args->stop_it)
+			break;
+		usleep(1000);
+	}
+	return NULL;
+}
+
 
 void ft_clean(t_arguments *args, t_coder *coders, t_dongle *dongles, pthread_t *ids, pthread_mutex_t *lock_in)
 {
@@ -86,6 +112,7 @@ void innit_coders(t_arguments *args, t_coder *coders, t_dongle *dongles, struct 
 		coders[i].start_time = start;
 		coders[i].lock_in = lock_in;
 		coders[i].args = args;
+		coders[i].last_compile = 0;
 		i++;
 	}
 }
