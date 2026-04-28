@@ -6,7 +6,7 @@
 /*   By: ymouafak <ymouafak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/19 13:14:33 by ymouafak          #+#    #+#             */
-/*   Updated: 2026/04/26 19:29:09 by ymouafak         ###   ########.fr       */
+/*   Updated: 2026/04/28 15:50:36 by ymouafak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,7 @@ typedef struct s_coder
     pthread_mutex_t *lock_in;
     t_arguments *args;
     long last_compile;
+    int compile_count;
 }t_coder;
 
 
@@ -63,5 +64,6 @@ void	get_dongle(t_coder *c, t_dongle *dongle);
 void    release_dongles(t_coder *C);
 void get_dongles(t_coder *c);
 long ft_clock(struct timeval start);
+int burnout_check(t_coder *c);
 
 #endif

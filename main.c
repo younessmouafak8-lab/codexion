@@ -6,7 +6,7 @@
 /*   By: ymouafak <ymouafak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/17 14:14:58 by ymouafak          #+#    #+#             */
-/*   Updated: 2026/04/26 19:50:07 by ymouafak         ###   ########.fr       */
+/*   Updated: 2026/04/28 16:02:24 by ymouafak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,11 @@ void actions(t_coder *c, char *str)
 	long time;
 
 	pthread_mutex_lock(c->lock_in);
+	if (c->args->stop_it)
+	{
+		pthread_mutex_unlock(c->lock_in);
+		return ;
+	}
 	time = ft_clock(c->start_time);
 	printf("%ld %d %s\n", time, c->id, str);
 	pthread_mutex_unlock(c->lock_in);
@@ -27,26 +32,32 @@ void actions(t_coder *c, char *str)
 void *test_func(void *ptr)
 {
 	t_coder *c;
-	int i;
 
-	i = 0;
 	c = (t_coder *)ptr;
 	while (1)
 	{
-		if (i >= c->args->compiles_num)
+		if (c->compile_count >= c->args->compiles_num || burnout_check(c))
 			break;
 		get_dongles(c);
 		actions(c, "has taken a dongle");
 		actions(c, "has taken a dongle");
 		actions(c, "is compiling");
-		usleep(c->args->time_tocompile * 1000);
+		pthread_mutex_lock(c->lock_in);
 		c->last_compile = ft_clock(c->start_time);
+		c->compile_count++;
+		pthread_mutex_unlock(c->lock_in);
+		usleep(c->args->time_tocompile * 1000);
+		if (burnout_check(c))
+			break;
 		release_dongles(c);
 		actions(c, "is debugging");
 		usleep(c->args->time_todebug * 1000);
+		if (burnout_check(c))
+			break;
 		actions(c, "is refactoring");
 		usleep(c->args->time_torefactor * 1000);
-		i++;
+		if (burnout_check(c))
+			break;
 	}
 	return (NULL);
 }
@@ -56,20 +67,31 @@ void *monitor(void *cds)
 	t_arguments *args;
 	t_coder *coders;
 	int i;
+	long last_compile;
 
 	coders = (t_coder *)cds;
 	args = coders[0].args;
-	while(1){
+	while (1)
+	{
 		i = 0;
-		while(i < args->num_coders)
+		while (i < args->num_coders)
 		{
-			if (ft_clock(coders[i].start_time) - coders[i].last_compile > args->burnout_time)
+			pthread_mutex_lock(coders[i].lock_in);
+			last_compile = coders[i].last_compile;
+			pthread_mutex_unlock(coders[i].lock_in);
+			if (ft_clock(coders[i].start_time) - last_compile > args->burnout_time
+				&& coders[i].compile_count < args->compiles_num)
+			{
+				actions(&coders[i], "burned out");
+				pthread_mutex_lock(coders[i].lock_in);
 				args->stop_it = 1;
-			else
-				i++;
+				pthread_mutex_unlock(coders[i].lock_in);
+				return (NULL);
+			}
+			i++;
 		}
-		if (args->stop_it)
-			break;
+		if (burnout_check(&coders[0]))
+			return (NULL);
 		usleep(1000);
 	}
 	return NULL;
@@ -81,8 +103,8 @@ void ft_clean(t_arguments *args, t_coder *coders, t_dongle *dongles, pthread_t *
 	int i;
 
 	i = 0;
-    pthread_mutex_destroy(lock_in);
-    free(coders);
+	pthread_mutex_destroy(lock_in);
+	free(coders);
 	if (dongles)
 	{
 		while (i < args->num_coders)
@@ -92,8 +114,8 @@ void ft_clean(t_arguments *args, t_coder *coders, t_dongle *dongles, pthread_t *
 		}
 		free(dongles);
 	}
-    free(args);
-    free(ids);
+	free(args);
+	free(ids);
 }
 
 void innit_coders(t_arguments *args, t_coder *coders, t_dongle *dongles, struct timeval start, pthread_mutex_t *lock_in)
@@ -113,28 +135,29 @@ void innit_coders(t_arguments *args, t_coder *coders, t_dongle *dongles, struct 
 		coders[i].lock_in = lock_in;
 		coders[i].args = args;
 		coders[i].last_compile = 0;
+		coders[i].compile_count = 0;
 		i++;
 	}
 }
 
 void launch_threads(pthread_t *ids, t_coder *coders, int num_coders)
 {
-    int i;
+	int i;
 
-    i = 0;
-    while (i < num_coders)
-    {
-        pthread_create(&ids[i], NULL, test_func, &coders[i]);
-        i++;
-    }
-    i = 0;
-    while (i < num_coders)
-    {
-        pthread_join(ids[i], NULL);
-        i++;
-    }
+	i = 0;
+	while (i < num_coders)
+	{
+		pthread_create(&ids[i], NULL, test_func, &coders[i]);
+		i++;
+	}
+	pthread_create(&ids[i], NULL, monitor, coders);
+	i = 0;
+	while (i < num_coders + 1)
+	{
+		pthread_join(ids[i], NULL);
+		i++;
+	}
 }
-
 int	main(int argc, char **str)
 {
 	t_arguments	*args;
@@ -167,7 +190,7 @@ int	main(int argc, char **str)
 	}
 	gettimeofday(&start, NULL);
 	innit_coders(args, coders, dongles, start, &lock_in);
-	ids = malloc(args->num_coders * sizeof(pthread_t));
+	ids = malloc((args->num_coders + 1) * sizeof(pthread_t));
 	if (!ids)
 	{
 		ft_clean(args, coders, dongles, NULL, &lock_in);

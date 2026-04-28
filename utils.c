@@ -6,7 +6,7 @@
 /*   By: ymouafak <ymouafak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/21 15:25:18 by ymouafak          #+#    #+#             */
-/*   Updated: 2026/04/26 18:51:07 by ymouafak         ###   ########.fr       */
+/*   Updated: 2026/04/27 18:40:24 by ymouafak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,8 +45,8 @@ void get_dongle(t_coder *c, t_dongle *dongle)
 {
     while (1)
     {
-        while (!dongle->is_available || ft_clock(c->start_time) < dongle->cooldown)
-            usleep(10);
+        if (burnout_check(c))
+            return ;
         pthread_mutex_lock(&dongle->lock);
         if (dongle->is_available && ft_clock(c->start_time) >= dongle->cooldown)
         {
@@ -55,6 +55,7 @@ void get_dongle(t_coder *c, t_dongle *dongle)
             return ;
         }
         pthread_mutex_unlock(&dongle->lock);
+        usleep(10);
     }
 }
 
