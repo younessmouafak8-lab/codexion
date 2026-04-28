@@ -6,28 +6,11 @@
 /*   By: ymouafak <ymouafak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/17 14:14:58 by ymouafak          #+#    #+#             */
-/*   Updated: 2026/04/28 16:02:24 by ymouafak         ###   ########.fr       */
+/*   Updated: 2026/04/28 18:33:17 by ymouafak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "codexion.h"
-
-
-void actions(t_coder *c, char *str)
-{
-	long time;
-
-	pthread_mutex_lock(c->lock_in);
-	if (c->args->stop_it)
-	{
-		pthread_mutex_unlock(c->lock_in);
-		return ;
-	}
-	time = ft_clock(c->start_time);
-	printf("%ld %d %s\n", time, c->id, str);
-	pthread_mutex_unlock(c->lock_in);
-
-}
 
 void *test_func(void *ptr)
 {
@@ -66,31 +49,15 @@ void *monitor(void *cds)
 {
 	t_arguments *args;
 	t_coder *coders;
-	int i;
-	long last_compile;
+	int done_compiling;
 
 	coders = (t_coder *)cds;
 	args = coders[0].args;
 	while (1)
 	{
-		i = 0;
-		while (i < args->num_coders)
-		{
-			pthread_mutex_lock(coders[i].lock_in);
-			last_compile = coders[i].last_compile;
-			pthread_mutex_unlock(coders[i].lock_in);
-			if (ft_clock(coders[i].start_time) - last_compile > args->burnout_time
-				&& coders[i].compile_count < args->compiles_num)
-			{
-				actions(&coders[i], "burned out");
-				pthread_mutex_lock(coders[i].lock_in);
-				args->stop_it = 1;
-				pthread_mutex_unlock(coders[i].lock_in);
-				return (NULL);
-			}
-			i++;
-		}
-		if (burnout_check(&coders[0]))
+		done_compiling = 0;
+		monitor_routine(coders, args, &done_compiling);
+		if (burnout_check(&coders[0]) || done_compiling == args->num_coders)
 			return (NULL);
 		usleep(1000);
 	}

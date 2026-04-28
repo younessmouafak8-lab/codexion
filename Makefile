@@ -1,5 +1,22 @@
-all = codexion
-C_FLAGS = -Wall -Wextra -Werror -pthread
-SRCS = main.c ft_atoi.c parsing.c utils.c monitor_utils.c
+NAME = codexion
+C_FLAGS = -Wall -Wextra -Werror -pthread -fsanitize=thread
+C_HEADER = codexion.h
+RM = rm -rf
+SRCS = main.c ft_atoi.c parsing.c utils.c monitor_utils.c thread_routine.c
+OBJS = $(SRCS:.c=.o)
 
+all: $(NAME)
 
+$(NAME) : $(OBJS) $(C_HEADER)
+	cc $(C_FLAGS) $(OBJS) -o $(NAME)
+
+%.o: %.c $(C_HEADER)
+	cc $(C_FLAGS) -c $<
+
+clean :
+	$(RM) $(OBJS)
+
+fclean : clean
+	$(RM) $(NAME)
+
+re : fclean all

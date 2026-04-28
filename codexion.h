@@ -6,7 +6,7 @@
 /*   By: ymouafak <ymouafak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/19 13:14:33 by ymouafak          #+#    #+#             */
-/*   Updated: 2026/04/28 15:50:36 by ymouafak         ###   ########.fr       */
+/*   Updated: 2026/04/28 18:33:42 by ymouafak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,10 +60,12 @@ t_arguments	*parsing(char **str);
 void	add_num(t_arguments *args, int n, int index);
 void	*ft_im_out(t_arguments *args, int print_n);
 long	ft_atoi(const char *str);
+void actions(t_coder *c, char *str);
 void	get_dongle(t_coder *c, t_dongle *dongle);
 void    release_dongles(t_coder *C);
 void get_dongles(t_coder *c);
 long ft_clock(struct timeval start);
 int burnout_check(t_coder *c);
+void *monitor_routine(t_coder *coders, t_arguments *args, int *done_compiling);
 
 #endif
