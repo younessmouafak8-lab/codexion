@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   utils.c                                            :+:      :+:    :+:   */
+/*   dongles_utils.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ymouafak <ymouafak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/21 15:25:18 by ymouafak          #+#    #+#             */
-/*   Updated: 2026/04/27 18:40:24 by ymouafak         ###   ########.fr       */
+/*   Updated: 2026/05/01 15:11:41 by ymouafak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,18 +27,18 @@ void get_dongles(t_coder *c)
     t_dongle *first;
     t_dongle *second;
 
-    if (c->left->id < c->right->id)
+    first  = c->left;
+    second = c->right;
+    if (c->id % 2)
     {
-        first  = c->left;
-        second = c->right;
+        get_dongle(c, first);
+        get_dongle(c, second);
     }
     else
     {
-        first  = c->right;
-        second = c->left;
+        get_dongle(c, second);    
+        get_dongle(c, first);
     }
-    get_dongle(c, first);
-    get_dongle(c, second);
 }
 
 void get_dongle(t_coder *c, t_dongle *dongle)

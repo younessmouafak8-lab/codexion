@@ -6,7 +6,7 @@
 /*   By: ymouafak <ymouafak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/17 14:14:58 by ymouafak          #+#    #+#             */
-/*   Updated: 2026/04/28 18:33:17 by ymouafak         ###   ########.fr       */
+/*   Updated: 2026/05/01 15:25:36 by ymouafak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ void *test_func(void *ptr)
 	c = (t_coder *)ptr;
 	while (1)
 	{
-		if (c->compile_count >= c->args->compiles_num || burnout_check(c))
+		if (burnout_check(c))
 			break;
 		get_dongles(c);
 		actions(c, "has taken a dongle");
@@ -56,9 +56,15 @@ void *monitor(void *cds)
 	while (1)
 	{
 		done_compiling = 0;
-		monitor_routine(coders, args, &done_compiling);
-		if (burnout_check(&coders[0]) || done_compiling == args->num_coders)
+		if(!monitor_routine(coders, args, &done_compiling))
 			return (NULL);
+		if (done_compiling == args->num_coders)
+		{
+			pthread_mutex_lock(coders[0].lock_in);
+			args->stop_it = 1;
+			pthread_mutex_unlock(coders[0].lock_in);
+			return (NULL);
+		}
 		usleep(1000);
 	}
 	return NULL;
@@ -95,6 +101,7 @@ void innit_coders(t_arguments *args, t_coder *coders, t_dongle *dongles, struct 
 		pthread_mutex_init(&dongles[i].lock, NULL);
 		dongles[i].id = i;
 		dongles[i].is_available = 1;
+		dongles[i].cooldown = 0;
 		coders[i].id = i + 1;
 		coders[i].left = &dongles[(i - 1 + args->num_coders) % args->num_coders];
 		coders[i].right = &dongles[i];
@@ -125,6 +132,13 @@ void launch_threads(pthread_t *ids, t_coder *coders, int num_coders)
 		i++;
 	}
 }
+
+// void simulation()
+// {
+	
+// }
+
+
 int	main(int argc, char **str)
 {
 	t_arguments	*args;

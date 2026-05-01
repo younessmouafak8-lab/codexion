@@ -1,8 +1,9 @@
 NAME = codexion
-C_FLAGS = -Wall -Wextra -Werror -pthread -fsanitize=thread
+C_FLAGS = -Wall -Wextra -Werror -pthread 
+# -fsanitize=thread
 C_HEADER = codexion.h
 RM = rm -rf
-SRCS = main.c ft_atoi.c parsing.c utils.c monitor_utils.c thread_routine.c
+SRCS = main.c ft_atoi.c parsing.c dongles_utils.c monitor_utils.c thread_routine.c
 OBJS = $(SRCS:.c=.o)
 
 all: $(NAME)

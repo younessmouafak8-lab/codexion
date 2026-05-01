@@ -6,7 +6,7 @@
 /*   By: ymouafak <ymouafak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/19 13:14:33 by ymouafak          #+#    #+#             */
-/*   Updated: 2026/04/28 18:33:42 by ymouafak         ###   ########.fr       */
+/*   Updated: 2026/04/29 18:33:35 by ymouafak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,6 +66,6 @@ void    release_dongles(t_coder *C);
 void get_dongles(t_coder *c);
 long ft_clock(struct timeval start);
 int burnout_check(t_coder *c);
-void *monitor_routine(t_coder *coders, t_arguments *args, int *done_compiling);
+int monitor_routine(t_coder *coders, t_arguments *args, int *done_compiling);
 
 #endif
