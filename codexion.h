@@ -6,7 +6,7 @@
 /*   By: ymouafak <ymouafak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/19 13:14:33 by ymouafak          #+#    #+#             */
-/*   Updated: 2026/04/29 18:33:35 by ymouafak         ###   ########.fr       */
+/*   Updated: 2026/05/03 15:26:09 by ymouafak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,5 +67,10 @@ void get_dongles(t_coder *c);
 long ft_clock(struct timeval start);
 int burnout_check(t_coder *c);
 int monitor_routine(t_coder *coders, t_arguments *args, int *done_compiling);
+void innit_coders(t_arguments *args, t_coder *coders, t_dongle *dongles, struct timeval start, pthread_mutex_t *lock_in);
+void launch_threads(pthread_t *ids, t_coder *coders, int num_coders);
+void *test_func(void *ptr);
+void *monitor(void *cds);
+void ft_clean(t_arguments *args, t_coder *coders, t_dongle *dongles, pthread_t *ids, pthread_mutex_t *lock_in);
 
 #endif

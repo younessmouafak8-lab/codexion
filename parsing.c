@@ -6,11 +6,31 @@
 /*   By: ymouafak <ymouafak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/11 18:52:48 by ymouafak          #+#    #+#             */
-/*   Updated: 2026/04/26 19:43:07 by ymouafak         ###   ########.fr       */
+/*   Updated: 2026/05/03 19:28:30 by ymouafak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "codexion.h"
+
+int	ft_checks(char	*str)
+{
+	int	i;
+	int	counter;
+
+	i = 0;
+	counter = 0;
+	while (str[i])
+	{
+		if (str[i] == '-' || str[i] == '+')
+		{
+			counter++;
+			if (counter > 1 || str[i + 1] == '\0' || str[i + 1] == ' ')
+				return (0);
+		}
+		i++;
+	}
+	return (1);
+}
 
 void	*ft_im_out(t_arguments *args, int print_n)
 {

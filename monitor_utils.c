@@ -6,11 +6,36 @@
 /*   By: ymouafak <ymouafak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/27 18:38:39 by ymouafak          #+#    #+#             */
-/*   Updated: 2026/04/29 18:34:53 by ymouafak         ###   ########.fr       */
+/*   Updated: 2026/05/03 15:17:43 by ymouafak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "codexion.h"
+
+void *monitor(void *cds)
+{
+	t_arguments *args;
+	t_coder *coders;
+	int done_compiling;
+
+	coders = (t_coder *)cds;
+	args = coders[0].args;
+	while (1)
+	{
+		done_compiling = 0;
+		if(!monitor_routine(coders, args, &done_compiling))
+			return (NULL);
+		if (done_compiling == args->num_coders)
+		{
+			pthread_mutex_lock(coders[0].lock_in);
+			args->stop_it = 1;
+			pthread_mutex_unlock(coders[0].lock_in);
+			return (NULL);
+		}
+		usleep(1000);
+	}
+	return NULL;
+}
 
 int burnout_check(t_coder *c)
 {
