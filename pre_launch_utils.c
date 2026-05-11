@@ -6,7 +6,7 @@
 /*   By: ymouafak <ymouafak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/01 15:40:36 by ymouafak          #+#    #+#             */
-/*   Updated: 2026/05/03 15:11:44 by ymouafak         ###   ########.fr       */
+/*   Updated: 2026/05/11 21:59:36 by ymouafak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,7 @@ void innit_coders(t_arguments *args, t_coder *coders, t_dongle *dongles, struct 
 		dongles[i].id = i;
 		dongles[i].is_available = 1;
 		dongles[i].cooldown = 0;
+		dongles[i].size = 0;
 		coders[i].id = i + 1;
 		coders[i].left = &dongles[(i - 1 + args->num_coders) % args->num_coders];
 		coders[i].right = &dongles[i];

@@ -3,7 +3,7 @@ C_FLAGS = -Wall -Wextra -Werror -pthread
 # -fsanitize=thread
 C_HEADER = codexion.h
 RM = rm -rf
-SRCS = main.c ft_atoi.c parsing.c dongles_utils.c monitor_utils.c thread_routine.c pre_launch_utils.c cleanup_utils.c
+SRCS = main.c ft_atoi.c parsing.c dongles_utils.c monitor_utils.c thread_routine.c pre_launch_utils.c cleanup_utils.c heap.c
 OBJS = $(SRCS:.c=.o)
 
 all: $(NAME)

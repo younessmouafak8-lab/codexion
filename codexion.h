@@ -6,7 +6,7 @@
 /*   By: ymouafak <ymouafak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/19 13:14:33 by ymouafak          #+#    #+#             */
-/*   Updated: 2026/05/03 15:26:09 by ymouafak         ###   ########.fr       */
+/*   Updated: 2026/05/11 22:25:59 by ymouafak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,12 +35,20 @@ typedef struct s_arguments
     int stop_it;
 }t_arguments;
 
+typedef struct s_waiter
+{
+    int id;
+    long priority;
+}t_waiter;
+
 typedef struct s_dongle
 {
     int id;
     int is_available;
     long cooldown;
     pthread_mutex_t lock;
+    t_waiter arr[2];
+    int size;
 }t_dongle;
 
 typedef struct s_coder
@@ -72,5 +80,7 @@ void launch_threads(pthread_t *ids, t_coder *coders, int num_coders);
 void *test_func(void *ptr);
 void *monitor(void *cds);
 void ft_clean(t_arguments *args, t_coder *coders, t_dongle *dongles, pthread_t *ids, pthread_mutex_t *lock_in);
+void insert(t_dongle *dongle, t_coder *c);
+t_waiter get_min(t_dongle *dongle);
 
 #endif
