@@ -6,7 +6,7 @@
 /*   By: ymouafak <ymouafak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/11 18:52:48 by ymouafak          #+#    #+#             */
-/*   Updated: 2026/05/03 19:28:30 by ymouafak         ###   ########.fr       */
+/*   Updated: 2026/05/13 16:20:54 by ymouafak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,6 +60,16 @@ void	add_num(t_arguments *args, int n, int index)
 	}
 }
 
+int double_check(t_arguments *args)
+{
+	if (!args -> num_coders)
+	{
+		printf("The number of coders cannot be 0 :(\n");
+		return (0);
+	}
+	return (1);
+}
+
 t_arguments	*parsing(char **str)
 {
 	int			i;
@@ -73,7 +83,7 @@ t_arguments	*parsing(char **str)
 	while (i < 7)
 	{
 		n = ft_atoi(str[i]);
-		if (n <= 0)
+		if (n < 0 || !ft_checks(str[i]))
 			return (ft_im_out(args, 1));
 		add_num(args, n, i);
 		i++;
@@ -82,5 +92,7 @@ t_arguments	*parsing(char **str)
 		return (ft_im_out(args, 1));
 	args->scheduler = str[i];
 	args->stop_it = 0;
+	if (!double_check(args))
+		return (NULL);
 	return (args);
 }

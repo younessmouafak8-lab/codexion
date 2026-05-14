@@ -1,0 +1,291 @@
+0 1 has taken a dongle
+0 1 has taken a dongle
+0 1 is compiling
+0 4 has taken a dongle
+0 4 has taken a dongle
+0 4 is compiling
+0 4 is debugging
+0 8 has taken a dongle
+0 8 has taken a dongle
+0 6 has taken a dongle
+1 6 has taken a dongle
+1 6 is compiling
+1 4 is refactoring
+1 1 is debugging
+1 2 has taken a dongle
+1 2 has taken a dongle
+1 2 is compiling
+1 1 is refactoring
+1 5 has taken a dongle
+1 5 has taken a dongle
+1 5 is compiling
+1 1 has taken a dongle
+1 1 has taken a dongle
+1 1 is compiling
+1 17 has taken a dongle
+1 17 has taken a dongle
+1 17 is compiling
+1 8 is compiling
+2 14 has taken a dongle
+2 14 has taken a dongle
+2 14 is compiling
+2 7 has taken a dongle
+2 17 is debugging
+2 14 is debugging
+2 6 is debugging
+2 18 has taken a dongle
+2 18 has taken a dongle
+2 5 is debugging
+2 18 is compiling
+2 1 is debugging
+2 17 is refactoring
+2 1 is refactoring
+2 13 has taken a dongle
+2 16 has taken a dongle
+2 16 has taken a dongle
+2 16 is compiling
+2 9 has taken a dongle
+2 9 has taken a dongle
+2 9 is compiling
+2 16 is debugging
+2 11 has taken a dongle
+2 11 has taken a dongle
+2 11 is compiling
+3 5 is refactoring
+3 16 is refactoring
+3 6 is refactoring
+3 10 has taken a dongle
+3 10 has taken a dongle
+3 10 is compiling
+3 8 is debugging
+3 7 has taken a dongle
+3 7 is compiling
+3 13 has taken a dongle
+3 13 is compiling
+3 14 is refactoring
+3 4 has taken a dongle
+3 4 has taken a dongle
+3 11 is debugging
+3 11 is refactoring
+3 14 has taken a dongle
+3 11 has taken a dongle
+3 9 is debugging
+3 3 has taken a dongle
+3 11 has taken a dongle
+3 11 is compiling
+4 8 is refactoring
+4 18 is debugging
+4 9 is refactoring
+4 2 is debugging
+4 7 is debugging
+4 4 is compiling
+4 10 is debugging
+4 7 is refactoring
+4 6 has taken a dongle
+4 6 has taken a dongle
+4 6 is compiling
+4 11 is debugging
+4 1 has taken a dongle
+4 1 has taken a dongle
+4 1 is compiling
+4 4 is debugging
+4 2 is refactoring
+4 18 is refactoring
+4 10 is refactoring
+4 12 has taken a dongle
+4 12 has taken a dongle
+4 12 is compiling
+4 10 has taken a dongle
+4 10 has taken a dongle
+5 10 is compiling
+5 12 is debugging
+5 8 has taken a dongle
+5 8 has taken a dongle
+5 8 is compiling
+5 5 has taken a dongle
+5 19 has taken a dongle
+5 19 has taken a dongle
+5 6 is debugging
+5 19 is compiling
+5 6 is refactoring
+5 16 has taken a dongle
+5 16 has taken a dongle
+8 16 is compiling
+8 14 has taken a dongle
+8 14 is compiling
+8 4 is refactoring
+8 12 is refactoring
+8 16 is debugging
+8 11 is refactoring
+8 5 has taken a dongle
+8 5 is compiling
+8 13 is debugging
+8 1 is debugging
+8 15 has taken a dongle
+8 15 has taken a dongle
+8 15 is compiling
+8 18 has taken a dongle
+8 18 has taken a dongle
+8 18 is compiling
+8 18 is debugging
+8 18 is refactoring
+9 18 has taken a dongle
+9 18 has taken a dongle
+9 18 is compiling
+9 9 has taken a dongle
+9 9 has taken a dongle
+9 9 is compiling
+9 18 is debugging
+9 9 is debugging
+9 18 is refactoring
+10 9 is refactoring
+10 18 has taken a dongle
+10 18 has taken a dongle
+10 14 is debugging
+10 18 is compiling
+10 14 is refactoring
+10 18 is debugging
+10 14 has taken a dongle
+10 14 has taken a dongle
+10 14 is compiling
+10 18 is refactoring
+10 14 is debugging
+10 18 has taken a dongle
+10 18 has taken a dongle
+10 18 is compiling
+10 18 is debugging
+10 18 is refactoring
+11 4 has taken a dongle
+11 11 has taken a dongle
+11 11 has taken a dongle
+11 11 is compiling
+11 5 is debugging
+11 1 is refactoring
+11 15 is debugging
+11 1 has taken a dongle
+11 1 has taken a dongle
+11 1 is compiling
+11 15 is refactoring
+11 1 is debugging
+11 17 has taken a dongle
+11 17 has taken a dongle
+11 17 is compiling
+11 3 has taken a dongle
+11 10 is debugging
+11 11 is debugging
+11 5 is refactoring
+11 11 is refactoring
+12 11 has taken a dongle
+12 11 has taken a dongle
+12 11 is compiling
+12 11 is debugging
+13 11 is refactoring
+13 11 has taken a dongle
+13 11 has taken a dongle
+13 11 is compiling
+15 18 has taken a dongle
+15 18 has taken a dongle
+15 14 is refactoring
+15 9 has taken a dongle
+15 9 has taken a dongle
+15 9 is compiling
+15 17 is debugging
+15 19 is debugging
+15 11 is debugging
+15 17 is refactoring
+15 11 is refactoring
+15 18 is compiling
+16 11 has taken a dongle
+16 11 has taken a dongle
+16 11 is compiling
+16 18 is debugging
+16 13 is refactoring
+16 14 has taken a dongle
+16 14 has taken a dongle
+16 14 is compiling
+16 10 is refactoring
+16 14 is debugging
+16 7 has taken a dongle
+16 7 has taken a dongle
+16 7 is compiling
+16 14 is refactoring
+16 7 is debugging
+16 7 is refactoring
+17 9 is debugging
+17 8 is debugging
+17 9 is refactoring
+17 10 has taken a dongle
+17 10 has taken a dongle
+17 10 is compiling
+17 6 has taken a dongle
+17 6 has taken a dongle
+17 6 is compiling
+17 16 is refactoring
+17 19 is refactoring
+17 10 is debugging
+17 18 is refactoring
+17 13 has taken a dongle
+17 13 has taken a dongle
+17 19 has taken a dongle
+17 8 is refactoring
+19 8 has taken a dongle
+19 8 has taken a dongle
+19 10 is refactoring
+19 8 is compiling
+19 6 is debugging
+19 7 has taken a dongle
+21 10 has taken a dongle
+21 10 has taken a dongle
+21 10 is compiling
+21 6 is refactoring
+21 17 has taken a dongle
+21 17 has taken a dongle
+21 13 is compiling
+21 11 is debugging
+22 8 is debugging
+22 9 has taken a dongle
+22 9 has taken a dongle
+22 9 is compiling
+22 8 is refactoring
+22 10 is debugging
+22 13 is debugging
+23 9 is debugging
+23 15 has taken a dongle
+23 15 has taken a dongle
+23 15 is compiling
+23 8 has taken a dongle
+23 15 is debugging
+23 10 is refactoring
+23 11 is refactoring
+23 14 has taken a dongle
+23 14 has taken a dongle
+23 14 is compiling
+23 13 is refactoring
+23 14 is debugging
+23 14 is refactoring
+23 14 has taken a dongle
+23 14 has taken a dongle
+23 14 is compiling
+23 14 is debugging
+24 14 is refactoring
+24 14 has taken a dongle
+24 14 has taken a dongle
+24 14 is compiling
+24 14 is debugging
+24 14 is refactoring
+24 14 has taken a dongle
+24 14 has taken a dongle
+24 14 is compiling
+24 14 is debugging
+24 14 is refactoring
+24 14 has taken a dongle
+24 14 has taken a dongle
+24 14 is compiling
+24 14 is debugging
+25 14 is refactoring
+25 1 is refactoring
+25 9 is refactoring
+25 17 is compiling
+25 19 has taken a dongle
+25 19 is compiling
+25 2 burned out

@@ -6,11 +6,16 @@
 /*   By: ymouafak <ymouafak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/28 17:32:40 by ymouafak          #+#    #+#             */
-/*   Updated: 2026/05/10 20:53:40 by ymouafak         ###   ########.fr       */
+/*   Updated: 2026/05/14 18:58:12 by ymouafak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "codexion.h"
+
+// void my_usleep(t_coder *c, )
+// {
+	 
+// }
 
 void actions(t_coder *c, char *str)
 {
@@ -35,25 +40,17 @@ void *test_func(void *ptr)
 		if (burnout_check(c))
 			break;
 		get_dongles(c);
-		actions(c, "has taken a dongle");
-		actions(c, "has taken a dongle");
 		actions(c, "is compiling");
-		pthread_mutex_lock(c->lock_in);
+		pthread_mutex_lock(c->lock_in); 
 		c->last_compile = ft_clock(c->start_time);
 		c->compile_count++;
 		pthread_mutex_unlock(c->lock_in);
 		usleep(c->args->time_tocompile * 1000);
-		if (burnout_check(c))
-			break;
 		release_dongles(c);
 		actions(c, "is debugging");
 		usleep(c->args->time_todebug * 1000);
-		if (burnout_check(c))
-			break;
 		actions(c, "is refactoring");
 		usleep(c->args->time_torefactor * 1000);
-		if (burnout_check(c))
-			break;
 	}
 	return (NULL);
 }

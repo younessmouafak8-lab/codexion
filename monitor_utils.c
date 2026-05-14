@@ -6,7 +6,7 @@
 /*   By: ymouafak <ymouafak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/27 18:38:39 by ymouafak          #+#    #+#             */
-/*   Updated: 2026/05/03 15:17:43 by ymouafak         ###   ########.fr       */
+/*   Updated: 2026/05/14 19:04:43 by ymouafak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,19 +32,19 @@ void *monitor(void *cds)
 			pthread_mutex_unlock(coders[0].lock_in);
 			return (NULL);
 		}
-		usleep(1000);
+		usleep(100);
 	}
 	return NULL;
 }
 
 int burnout_check(t_coder *c)
 {
-	int result;
+	int temp;
 
 	pthread_mutex_lock(c->lock_in);
-	result = c->args->stop_it;
+	temp = c->args->stop_it;
 	pthread_mutex_unlock(c->lock_in);
-	return (result);
+	return (temp);
 }
 
 int monitor_routine(t_coder *coders, t_arguments *args, int *done_compiling)
@@ -60,7 +60,7 @@ int monitor_routine(t_coder *coders, t_arguments *args, int *done_compiling)
 			(*done_compiling)++;
 		last_compile = coders[i].last_compile;
 		pthread_mutex_unlock(coders[i].lock_in);
-		if (ft_clock(coders[i].start_time) - last_compile > args->burnout_time)
+		if (ft_clock(coders[i].start_time) - last_compile >= args->burnout_time)
 		{
 			pthread_mutex_lock(coders[i].lock_in);
 			printf("%ld %d burned out\n", ft_clock(coders[i].start_time), coders[i].id);

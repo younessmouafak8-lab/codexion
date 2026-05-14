@@ -6,7 +6,7 @@
 /*   By: ymouafak <ymouafak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/21 15:25:18 by ymouafak          #+#    #+#             */
-/*   Updated: 2026/05/11 22:37:02 by ymouafak         ###   ########.fr       */
+/*   Updated: 2026/05/14 19:05:44 by ymouafak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,12 +32,18 @@ void get_dongles(t_coder *c)
     if (c->id % 2)
     {
         get_dongle(c, first);
+        actions(c, "has taken a dongle");
         get_dongle(c, second);
+        actions(c, "has taken a dongle");
     }
     else
     {
-        get_dongle(c, second);    
+        if(c -> args ->time_tocompile)
+            usleep(c -> args ->time_tocompile * 100);
+        get_dongle(c, second);
+        actions(c, "has taken a dongle");
         get_dongle(c, first);
+        actions(c, "has taken a dongle");
     }
 }
 
@@ -60,7 +66,9 @@ void get_dongle(t_coder *c, t_dongle *dongle)
             return ;
         }
         pthread_mutex_unlock(&dongle->lock);
-        usleep(1000);
+        if(c -> args ->time_tocompile)
+            usleep(c -> args ->time_tocompile * 100);
+        // usleep(100);
     }
 }
 

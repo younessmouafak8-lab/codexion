@@ -6,7 +6,7 @@
 /*   By: ymouafak <ymouafak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/07 15:03:56 by ymouafak          #+#    #+#             */
-/*   Updated: 2026/05/11 22:16:26 by ymouafak         ###   ########.fr       */
+/*   Updated: 2026/05/14 20:56:35 by ymouafak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,17 @@ void	ft_swap(t_waiter *a, t_waiter *b)
 	*a = *b;
 	*b = temp;
 }
+
+int higher_priority(t_waiter a, t_waiter b)
+{
+    if (a.priority < b.priority)
+        return (1);
+    if (a.priority == b.priority && a.id % 2)
+        return (1);
+
+    return (0);
+}
+
 void	bubble_down(t_dongle *dongle)
 {
 	int	i;
@@ -34,10 +45,10 @@ void	bubble_down(t_dongle *dongle)
 		child2 = i * 2 + 2;
 		smallest = i;
 		if (child1 < dongle->size &&
-			dongle->arr[child1].priority < dongle->arr[smallest].priority)
+			higher_priority(dongle->arr[child1], dongle->arr[smallest]))
 			smallest = child1;
 		if (child2 < dongle->size &&
-			dongle->arr[child2].priority < dongle->arr[smallest].priority)
+			higher_priority(dongle->arr[child2], dongle->arr[smallest]))
 			smallest = child2;
 		if (smallest == i)
 			break;
@@ -53,7 +64,7 @@ void bubble_up(t_dongle *dongle, int i)
 	arr = dongle -> arr;
 	while (i)
 	{
-		if (arr[i].priority < arr[(i - 1) / 2].priority)
+		if (higher_priority(arr[i], arr[(i - 1) / 2]))
 			ft_swap(&arr[i], &arr[(i - 1)/2]);
 		else
 			break;
@@ -64,7 +75,6 @@ void bubble_up(t_dongle *dongle, int i)
 void insert(t_dongle *dongle, t_coder *c)
 {
 	int i;
-	
 
 	i = dongle -> size;
 	dongle -> arr[i].id = c->id;
@@ -75,6 +85,13 @@ void insert(t_dongle *dongle, t_coder *c)
 		
 	dongle -> size++;
 	bubble_up(dongle, i);
+	// i = 0;
+	// while (i < dongle->size)
+	// {
+	// 	printf("coder n %d time is %ld\n", dongle->arr[i].id, dongle->arr[i].priority);
+	// 	i++;
+	// }
+	
 }
 
 t_waiter get_min(t_dongle *dongle)
