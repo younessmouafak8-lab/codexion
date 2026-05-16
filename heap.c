@@ -6,7 +6,7 @@
 /*   By: ymouafak <ymouafak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/07 15:03:56 by ymouafak          #+#    #+#             */
-/*   Updated: 2026/05/14 20:56:35 by ymouafak         ###   ########.fr       */
+/*   Updated: 2026/05/16 22:37:50 by ymouafak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,12 +23,19 @@ void	ft_swap(t_waiter *a, t_waiter *b)
 
 int higher_priority(t_waiter a, t_waiter b)
 {
-    if (a.priority < b.priority)
-        return (1);
-    if (a.priority == b.priority && a.id % 2)
-        return (1);
+	if (a.priority < b.priority)
+		return (1);
 
-    return (0);
+	if (a.priority > b.priority)
+		return (0);
+
+	if (a.compile_count < b.compile_count)
+		return (1);
+
+	if (a.compile_count > b.compile_count)
+		return (0);
+
+	return (a.id % 2);
 }
 
 void	bubble_down(t_dongle *dongle)
@@ -78,23 +85,16 @@ void insert(t_dongle *dongle, t_coder *c)
 
 	i = dongle -> size;
 	dongle -> arr[i].id = c->id;
+	dongle -> arr[i].compile_count = c -> compile_count;
 	if (!strcmp(c -> args -> scheduler, "fifo"))
 		dongle -> arr[i].priority = ft_clock(c -> start_time);
 	else
 		dongle -> arr[i].priority = c -> last_compile + c -> args -> burnout_time;
-		
 	dongle -> size++;
 	bubble_up(dongle, i);
-	// i = 0;
-	// while (i < dongle->size)
-	// {
-	// 	printf("coder n %d time is %ld\n", dongle->arr[i].id, dongle->arr[i].priority);
-	// 	i++;
-	// }
-	
 }
 
-t_waiter get_min(t_dongle *dongle)
+t_waiter pop(t_dongle *dongle)
 {
 	t_waiter root;
 	t_waiter *arr;

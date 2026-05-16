@@ -6,11 +6,18 @@
 /*   By: ymouafak <ymouafak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/27 18:38:39 by ymouafak          #+#    #+#             */
-/*   Updated: 2026/05/14 19:04:43 by ymouafak         ###   ########.fr       */
+/*   Updated: 2026/05/16 23:40:34 by ymouafak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "codexion.h"
+
+void stop_sign(t_arguments * args)
+{
+	pthread_mutex_lock(&args->lock_flag);
+	args->stop_it = 1;
+	pthread_mutex_unlock(&args->lock_flag);
+}
 
 void *monitor(void *cds)
 {
@@ -27,12 +34,10 @@ void *monitor(void *cds)
 			return (NULL);
 		if (done_compiling == args->num_coders)
 		{
-			pthread_mutex_lock(coders[0].lock_in);
-			args->stop_it = 1;
-			pthread_mutex_unlock(coders[0].lock_in);
+			stop_sign(args);
 			return (NULL);
 		}
-		usleep(100);
+		my_usleep(&coders[0], (args->burnout_time / 10) * 1000);
 	}
 	return NULL;
 }
@@ -41,9 +46,9 @@ int burnout_check(t_coder *c)
 {
 	int temp;
 
-	pthread_mutex_lock(c->lock_in);
+	pthread_mutex_lock(&c->args->lock_flag);
 	temp = c->args->stop_it;
-	pthread_mutex_unlock(c->lock_in);
+	pthread_mutex_unlock(&c->args->lock_flag);
 	return (temp);
 }
 
@@ -51,21 +56,25 @@ int monitor_routine(t_coder *coders, t_arguments *args, int *done_compiling)
 {
 	int i;
 	long last_compile;
+	long now;;
 
 	i = 0;
 	while (i < args->num_coders)
 	{
-		pthread_mutex_lock(coders[i].lock_in);
+		pthread_mutex_lock(&coders[i].lock_in);
 		if (coders[i].compile_count >= args->compiles_num)
 			(*done_compiling)++;
 		last_compile = coders[i].last_compile;
-		pthread_mutex_unlock(coders[i].lock_in);
+		pthread_mutex_unlock(&coders[i].lock_in);
 		if (ft_clock(coders[i].start_time) - last_compile >= args->burnout_time)
 		{
-			pthread_mutex_lock(coders[i].lock_in);
+			pthread_mutex_lock(&coders[i].args->lock_compile);
+			now = ft_clock(coders[i].start_time);
+			printf("DBG id=%d now=%ld last=%ld diff=%ld burn=%d\n",
+				coders[i].id, now, last_compile, now - last_compile, args->burnout_time);
 			printf("%ld %d burned out\n", ft_clock(coders[i].start_time), coders[i].id);
-			args->stop_it = 1;
-			pthread_mutex_unlock(coders[i].lock_in);
+			stop_sign(args);
+			pthread_mutex_unlock(&coders[i].args->lock_compile);
 			return (0);
 		}
 		i++;

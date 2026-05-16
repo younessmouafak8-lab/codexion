@@ -6,69 +6,90 @@
 /*   By: ymouafak <ymouafak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/21 15:25:18 by ymouafak          #+#    #+#             */
-/*   Updated: 2026/05/14 19:05:44 by ymouafak         ###   ########.fr       */
+/*   Updated: 2026/05/16 23:40:44 by ymouafak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "codexion.h"
 
-long ft_clock(struct timeval start)
+int check_availabilty(t_coder *coder, t_dongle *first, t_dongle *second)
 {
-	struct timeval current;
-	long current_time;
+    int i;
 
-	gettimeofday(&current, NULL);
-	current_time = ((current.tv_sec - start.tv_sec) * 1000) + ((current.tv_usec - start.tv_usec) / 1000);
-	return (current_time);
+    i = 0;
+    pthread_mutex_lock(&first->lock);
+    if (first->is_available && ft_clock(coder->start_time) >= first->cooldown &&
+            first->arr[0].id == coder->id)
+            i = 1;
+    pthread_mutex_unlock(&first->lock);
+
+    pthread_mutex_lock(&second->lock);
+    if (second->is_available && ft_clock(coder->start_time) >= second->cooldown &&
+            second->arr[0].id == coder->id && i)
+        i = 1;
+    else
+        i = 0;
+    pthread_mutex_unlock(&second->lock);
+
+    return (i);
 }
 
-void get_dongles(t_coder *c)
+void inserting_coder(t_coder *coder, t_dongle *first, t_dongle *second)
 {
-    t_dongle *first;
-    t_dongle *second;
+    pthread_mutex_lock(&first->lock);
+    insert(first, coder);
+    pthread_mutex_unlock(&first->lock);
 
-    first  = c->left;
-    second = c->right;
-    if (c->id % 2)
+    pthread_mutex_lock(&second->lock);
+    insert(second, coder);
+    pthread_mutex_unlock(&second->lock);
+}
+
+void poping_coder(t_dongle *first, t_dongle *second)
+{
+    pthread_mutex_lock(&first->lock);
+    first->is_available = 0;
+    pop(first);
+    pthread_mutex_unlock(&first->lock);
+
+    pthread_mutex_lock(&second->lock);
+    second->is_available = 0;
+    pop(second);
+    pthread_mutex_unlock(&second->lock);
+}
+
+void get_dongles(t_coder *coder)
+{
+    t_dongle *left;
+    t_dongle *right;
+    
+    if (coder->id % 2)
     {
-        get_dongle(c, first);
-        actions(c, "has taken a dongle");
-        get_dongle(c, second);
-        actions(c, "has taken a dongle");
+        left  = coder->left;
+        right = coder->right;
     }
     else
     {
-        if(c -> args ->time_tocompile)
-            usleep(c -> args ->time_tocompile * 100);
-        get_dongle(c, second);
-        actions(c, "has taken a dongle");
-        get_dongle(c, first);
-        actions(c, "has taken a dongle");
+        left  = coder->right;
+        right = coder->left;
     }
+    inserting_coder(coder, left, right);
+    check_dongles(coder, left, right);
 }
 
-void get_dongle(t_coder *c, t_dongle *dongle)
+void check_dongles(t_coder *coder, t_dongle *first, t_dongle *second)
 {
-    pthread_mutex_lock(&dongle->lock);
-    insert(dongle, c);
-    pthread_mutex_unlock(&dongle->lock);
     while (1)
     {
-        if (burnout_check(c))
+        if (burnout_check(coder))
             return ;
-        pthread_mutex_lock(&dongle->lock);
-        if (dongle->is_available && ft_clock(c->start_time) >= dongle->cooldown &&
-            dongle->arr[0].id == c->id)
+
+        if (check_availabilty(coder, first, second))
         {
-            dongle->is_available = 0;
-            get_min(dongle);
-            pthread_mutex_unlock(&dongle->lock);
+            poping_coder(first, second);
             return ;
         }
-        pthread_mutex_unlock(&dongle->lock);
-        if(c -> args ->time_tocompile)
-            usleep(c -> args ->time_tocompile * 100);
-        // usleep(100);
+        my_usleep(coder, 100);
     }
 }
 

@@ -1,5 +1,5 @@
 NAME = codexion
-C_FLAGS = -Wall -Wextra -Werror -pthread 
+C_FLAGS = -Wall -Wextra -Werror -pthread
 # -fsanitize=thread
 C_HEADER = codexion.h
 RM = rm -rf

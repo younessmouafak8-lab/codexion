@@ -6,7 +6,7 @@
 /*   By: ymouafak <ymouafak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/19 13:14:33 by ymouafak          #+#    #+#             */
-/*   Updated: 2026/05/13 16:18:24 by ymouafak         ###   ########.fr       */
+/*   Updated: 2026/05/16 23:41:16 by ymouafak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,11 +33,14 @@ typedef struct s_arguments
     int dong_cooldown;
     char *scheduler;
     int stop_it;
+    pthread_mutex_t lock_flag;
+    pthread_mutex_t lock_compile;
 }t_arguments;
 
 typedef struct s_waiter
 {
     int id;
+    int compile_count;
     long priority;
 }t_waiter;
 
@@ -57,10 +60,10 @@ typedef struct s_coder
     t_dongle *left;
     t_dongle *right;
     struct timeval start_time;
-    pthread_mutex_t *lock_in;
     t_arguments *args;
     long last_compile;
     int compile_count;
+    pthread_mutex_t lock_in;
 }t_coder;
 
 
@@ -69,18 +72,19 @@ void	add_num(t_arguments *args, int n, int index);
 void	*ft_im_out(t_arguments *args, int print_n);
 long	ft_atoi(const char *str);
 void actions(t_coder *c, char *str);
-void	get_dongle(t_coder *c, t_dongle *dongle);
+void	check_dongles(t_coder *c, t_dongle *dongle, t_dongle *second);
 void    release_dongles(t_coder *C);
 void get_dongles(t_coder *c);
 long ft_clock(struct timeval start);
 int burnout_check(t_coder *c);
 int monitor_routine(t_coder *coders, t_arguments *args, int *done_compiling);
-void innit_coders(t_arguments *args, t_coder *coders, t_dongle *dongles, struct timeval start, pthread_mutex_t *lock_in);
+void innit_coders(t_arguments *args, t_coder *coders, t_dongle *dongles, struct timeval start);
 void launch_threads(pthread_t *ids, t_coder *coders, int num_coders);
 void *test_func(void *ptr);
 void *monitor(void *cds);
-void ft_clean(t_arguments *args, t_coder *coders, t_dongle *dongles, pthread_t *ids, pthread_mutex_t *lock_in);
+void ft_clean(t_arguments *args, t_coder *coders, t_dongle *dongles, pthread_t *ids);
 void insert(t_dongle *dongle, t_coder *c);
-t_waiter get_min(t_dongle *dongle);
+t_waiter pop(t_dongle *dongle);
+void my_usleep(t_coder *coder, long time_us);
 
 #endif

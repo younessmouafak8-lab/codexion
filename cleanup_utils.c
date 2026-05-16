@@ -6,19 +6,20 @@
 /*   By: ymouafak <ymouafak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/03 15:25:03 by ymouafak          #+#    #+#             */
-/*   Updated: 2026/05/03 15:28:23 by ymouafak         ###   ########.fr       */
+/*   Updated: 2026/05/17 00:24:11 by ymouafak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "codexion.h"
 
-void ft_clean(t_arguments *args, t_coder *coders, t_dongle *dongles, pthread_t *ids, pthread_mutex_t *lock_in)
+void ft_clean(t_arguments *args, t_coder *coders, t_dongle *dongles, pthread_t *ids)
 {
 	int i;
 
 	i = 0;
-	pthread_mutex_destroy(lock_in);
-	free(coders);
+	pthread_mutex_destroy(&args->lock_compile);
+	pthread_mutex_destroy(&args->lock_flag);
+
 	if (dongles)
 	{
 		while (i < args->num_coders)
@@ -27,6 +28,15 @@ void ft_clean(t_arguments *args, t_coder *coders, t_dongle *dongles, pthread_t *
 			i++;
 		}
 		free(dongles);
+	}
+	if (coders)
+	{
+		while (i < args->num_coders)
+		{
+			pthread_mutex_destroy(&coders[i].lock_in);
+			i++;
+		}
+		free(coders);
 	}
 	free(args);
 	free(ids);
