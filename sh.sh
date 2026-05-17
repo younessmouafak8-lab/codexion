@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # ---------- CONFIG ----------
-CMD="./codexion 199 2100 100 100 100 10 600 edf"
+CMD="./codexion 199 15 0 0 0 10 0 edf"
 # ----------------------------
 
 total_runs=0

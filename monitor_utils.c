@@ -6,7 +6,7 @@
 /*   By: ymouafak <ymouafak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/27 18:38:39 by ymouafak          #+#    #+#             */
-/*   Updated: 2026/05/16 23:40:34 by ymouafak         ###   ########.fr       */
+/*   Updated: 2026/05/17 16:00:42 by ymouafak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ void *monitor(void *cds)
 			stop_sign(args);
 			return (NULL);
 		}
-		my_usleep(&coders[0], (args->burnout_time / 10) * 1000);
+		my_usleep(&coders[0], (args->burnout_time / 100) * 1000);
 	}
 	return NULL;
 }

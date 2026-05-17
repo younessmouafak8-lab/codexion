@@ -6,7 +6,7 @@
 /*   By: ymouafak <ymouafak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/21 15:25:18 by ymouafak          #+#    #+#             */
-/*   Updated: 2026/05/16 23:40:44 by ymouafak         ###   ########.fr       */
+/*   Updated: 2026/05/17 18:38:03 by ymouafak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,19 +17,16 @@ int check_availabilty(t_coder *coder, t_dongle *first, t_dongle *second)
     int i;
 
     i = 0;
-    pthread_mutex_lock(&first->lock);
+
     if (first->is_available && ft_clock(coder->start_time) >= first->cooldown &&
             first->arr[0].id == coder->id)
             i = 1;
-    pthread_mutex_unlock(&first->lock);
 
-    pthread_mutex_lock(&second->lock);
     if (second->is_available && ft_clock(coder->start_time) >= second->cooldown &&
-            second->arr[0].id == coder->id && i)
+        second->arr[0].id == coder->id && i)
         i = 1;
     else
         i = 0;
-    pthread_mutex_unlock(&second->lock);
 
     return (i);
 }
@@ -47,15 +44,12 @@ void inserting_coder(t_coder *coder, t_dongle *first, t_dongle *second)
 
 void poping_coder(t_dongle *first, t_dongle *second)
 {
-    pthread_mutex_lock(&first->lock);
     first->is_available = 0;
     pop(first);
-    pthread_mutex_unlock(&first->lock);
 
-    pthread_mutex_lock(&second->lock);
     second->is_available = 0;
     pop(second);
-    pthread_mutex_unlock(&second->lock);
+
 }
 
 void get_dongles(t_coder *coder)
@@ -84,12 +78,18 @@ void check_dongles(t_coder *coder, t_dongle *first, t_dongle *second)
         if (burnout_check(coder))
             return ;
 
+        pthread_mutex_lock(&first->lock);
+        pthread_mutex_lock(&second->lock);
         if (check_availabilty(coder, first, second))
         {
             poping_coder(first, second);
+            pthread_mutex_unlock(&first->lock);
+            pthread_mutex_unlock(&second->lock);
             return ;
         }
-        my_usleep(coder, 100);
+        pthread_mutex_unlock(&first->lock);
+        pthread_mutex_unlock(&second->lock);
+        my_usleep(coder, (coder->args->time_tocompile / 100) * 1000);
     }
 }
 

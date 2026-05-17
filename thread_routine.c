@@ -6,7 +6,7 @@
 /*   By: ymouafak <ymouafak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/28 17:32:40 by ymouafak          #+#    #+#             */
-/*   Updated: 2026/05/16 23:49:30 by ymouafak         ###   ########.fr       */
+/*   Updated: 2026/05/17 16:41:59 by ymouafak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ void my_usleep(t_coder *coder, long time_us)
 
     if (!time_us)
     {
-        usleep(10);
+        usleep(250);
         return ;
     }
     start = ft_clock(coder->start_time) * 1000;
@@ -31,7 +31,7 @@ void my_usleep(t_coder *coder, long time_us)
         if (passed_time >= time_us)
             break;
 
-        if (time_us - passed_time > 10000)
+        if (time_us - passed_time > 5000)
             usleep(1000);
         else
             usleep(100);
@@ -75,10 +75,12 @@ void *test_func(void *ptr)
         actions(c, "has taken a dongle");
 		pthread_mutex_lock(&c->lock_in);
 		c->last_compile = ft_clock(c->start_time);
-		c->compile_count++;
 		pthread_mutex_unlock(&c->lock_in);
 		actions(c, "is compiling");
 		my_usleep(c, c->args->time_tocompile * 1000);
+		pthread_mutex_lock(&c->lock_in);
+		c->compile_count++;
+		pthread_mutex_unlock(&c->lock_in);
 		release_dongles(c);
 		actions(c, "is debugging");
 		my_usleep(c, c->args->time_todebug * 1000);
