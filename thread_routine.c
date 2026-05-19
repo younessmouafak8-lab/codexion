@@ -6,103 +6,108 @@
 /*   By: ymouafak <ymouafak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/28 17:32:40 by ymouafak          #+#    #+#             */
-/*   Updated: 2026/05/17 16:41:59 by ymouafak         ###   ########.fr       */
+/*   Updated: 2026/05/19 13:31:45 by ymouafak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "codexion.h"
 
-void my_usleep(t_coder *coder, long time_us)
+void	my_usleep(t_coder *coder, int time_ms)
 {
-    long start;
-    long passed_time;
+	int	start;
+	int	passed_time;
 
-    if (!time_us)
-    {
-        usleep(250);
-        return ;
-    }
-    start = ft_clock(coder->start_time) * 1000;
-
-    while (!burnout_check(coder))
-    {
-        passed_time = (ft_clock(coder->start_time) * 1000) - start;
-
-        if (passed_time >= time_us)
-            break;
-
-        if (time_us - passed_time > 5000)
-            usleep(1000);
-        else
-            usleep(100);
-    }
+	if (!time_ms)
+	{
+		usleep(51);
+		return ;
+	}
+	start = ft_clock(coder->args->start_time);
+	while (!burnout_check(coder))
+	{
+		passed_time = (ft_clock(coder->args->start_time)) - start;
+		if (passed_time >= time_ms)
+			break ;
+		if (time_ms - passed_time > 5)
+			usleep(1000);
+		else
+			usleep(100);
+	}
 }
 
-long ft_clock(struct timeval start)
+long	ft_clock(struct timeval start)
 {
-	struct timeval current;
-	long current_time;
+	struct timeval	current;
+	long			current_time;
 
 	gettimeofday(&current, NULL);
-	current_time = ((current.tv_sec - start.tv_sec) * 1000) + ((current.tv_usec - start.tv_usec) / 1000);
+	current_time = ((current.tv_sec - start.tv_sec) * 1000)
+		+ ((current.tv_usec - start.tv_usec) / 1000);
 	return (current_time);
 }
 
-void actions(t_coder *c, char *str)
+void	actions(t_coder *c, char *str)
 {
-	long time;
+	long	time;
 
 	pthread_mutex_lock(&c->args->lock_compile);
 	if (!burnout_check(c))
 	{
-		time = ft_clock(c->start_time);
+		time = ft_clock(c->args->start_time);
 		printf("%ld %d %s\n", time, c->id, str);
 	}
 	pthread_mutex_unlock(&c->args->lock_compile);
 }
 
-void *test_func(void *ptr)
+void	*coder_routine(void *ptr)
 {
-	t_coder *c;
+	t_coder	*c;
 
 	c = (t_coder *)ptr;
+	while (!check_flag(c->args))
+	{
+		usleep(300);
+		if (!check_failure(c->args))
+			return (NULL);
+	}
+	if (!(c -> id % 2))
+		my_usleep(c, (c->args->time_tocompile + c->args->dong_cooldown) / 2);
 	while (1)
 	{
 		if (burnout_check(c))
-			break;
-		get_dongles(c);
-		actions(c, "has taken a dongle");
-        actions(c, "has taken a dongle");
-		pthread_mutex_lock(&c->lock_in);
-		c->last_compile = ft_clock(c->start_time);
-		pthread_mutex_unlock(&c->lock_in);
-		actions(c, "is compiling");
-		my_usleep(c, c->args->time_tocompile * 1000);
-		pthread_mutex_lock(&c->lock_in);
-		c->compile_count++;
-		pthread_mutex_unlock(&c->lock_in);
+			break ;
+		take_dongles(c);
+		compile(c);
 		release_dongles(c);
-		actions(c, "is debugging");
-		my_usleep(c, c->args->time_todebug * 1000);
-		actions(c, "is refactoring");
-		my_usleep(c, c->args->time_torefactor * 1000);
+		debug(c);
+		refactor(c);
 	}
 	return (NULL);
 }
 
-void launch_threads(pthread_t *ids, t_coder *coders, int num_coders)
+void	launch_threads(pthread_t *ids, t_coder *coders, t_arguments *args)
 {
-	int i;
+	int	i;
 
 	i = 0;
-	while (i < num_coders)
+	while (i < args->num_coders)
 	{
-		pthread_create(&ids[i], NULL, test_func, &coders[i]);
+		if (pthread_create(&ids[i], NULL, coder_routine, &coders[i]))
+			break ;
 		i++;
 	}
-	pthread_create(&ids[i], NULL, monitor, coders);
+	if (i != args->num_coders)
+	{
+		failure_instructions(args, ids, i);
+		return ;
+	}
+	if (pthread_create(&ids[i], NULL, monitor, coders))
+	{
+		failure_instructions(args, ids, args->num_coders);
+		return ;
+	}
 	i = 0;
-	while (i < num_coders + 1)
+	while (i < args->num_coders + 1)
 	{
 		pthread_join(ids[i], NULL);
 		i++;
