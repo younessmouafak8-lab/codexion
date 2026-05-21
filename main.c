@@ -6,11 +6,20 @@
 /*   By: ymouafak <ymouafak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/17 14:14:58 by ymouafak          #+#    #+#             */
-/*   Updated: 2026/05/19 12:31:23 by ymouafak         ###   ########.fr       */
+/*   Updated: 2026/05/21 23:04:51 by ymouafak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "codexion.h"
+
+void	mutex_failure(t_arguments *args, t_coder *coders,
+	t_dongle *dongles, pthread_t *ids)
+{
+	free(coders);
+	free(dongles);
+	free(args);
+	free(ids);
+}
 
 t_arguments	*validate(int argc, char **str)
 {
@@ -45,7 +54,11 @@ int	main(int argc, char **str)
 		ft_clean(args, coders, dongles, ids);
 		return (1);
 	}
-	innit_coders(args, coders, dongles);
+	if (innit_coders(args, coders, dongles) != 0)
+	{
+		mutex_failure(args, coders, dongles, ids);
+		return (1);
+	}
 	launch_threads(ids, coders, args);
 	ft_clean(args, coders, dongles, ids);
 	return (0);
