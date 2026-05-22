@@ -6,13 +6,13 @@
 /*   By: ymouafak <ymouafak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/21 15:25:18 by ymouafak          #+#    #+#             */
-/*   Updated: 2026/05/19 16:09:50 by ymouafak         ###   ########.fr       */
+/*   Updated: 2026/05/22 12:23:12 by ymouafak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "codexion.h"
 
-int	check_availabilty(t_coder *coder, t_dongle *first, t_dongle *second)
+int	check_availability(t_coder *coder, t_dongle *first, t_dongle *second)
 {
 	int	i;
 
@@ -62,7 +62,7 @@ void	check_dongles(t_coder *coder, t_dongle *first, t_dongle *second)
 		}
 		pthread_mutex_lock(&first->lock);
 		pthread_mutex_lock(&second->lock);
-		if (check_availabilty(coder, first, second))
+		if (check_availability(coder, first, second))
 		{
 			poping_coder(first, second);
 			pthread_mutex_unlock(&first->lock);
