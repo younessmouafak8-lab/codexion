@@ -6,7 +6,7 @@
 /*   By: ymouafak <ymouafak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/19 13:14:33 by ymouafak          #+#    #+#             */
-/*   Updated: 2026/05/21 22:57:42 by ymouafak         ###   ########.fr       */
+/*   Updated: 2026/05/22 14:47:53 by ymouafak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,6 @@
 # include <string.h>
 # include <pthread.h>
 # include <unistd.h>
-# include <time.h>
 # include <sys/time.h>
 
 typedef struct s_arguments
