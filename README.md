@@ -8,15 +8,15 @@ Coders / Threads sitting in a circle, sharing dongles, trying not to burn out. A
  
 ---
  
-## What is this
+## Description
  
 Each coder needs two dongles to compile. There are exactly as many dongles as coders, one between each pair. Coders cycle through compile → debug → refactor, and if one goes too long without compiling, they burn out and the simulation ends.
  
 The interesting part is making sure that never happens, no deadlocks, no starvation, burnout detected within 10ms. Two scheduling modes: `fifo` and `edf`.
  
 ---
- 
-## Running it
+
+## Instructions
  
 ```bash
 make
@@ -44,7 +44,7 @@ Example:
  
 ---
  
-## Thread synchronization
+## Thread synchronization mechanisms
  
 - **Per-dongle mutex + sleeping while waiting** — protects availability and the scheduler queue. Coders wait on the dongles to be marked available when freed.
 - **Per-coder mutex** — protects `last_compile` and `compile_count`, read by the monitor concurrently.
@@ -105,5 +105,5 @@ return (temp);
 - *Multithreading explained* — https://youtu.be/7ENFeb-J75k?si=eciNPFftNDsiWF9-
 - POSIX man pages — `pthread_create`, `pthread_mutex_init`, `pthread_join`
 
-**AI usage** — used Ai throughout to understand pthread internals (TCB, context switching, lifecycle of a thread), review code for norm compliance and error handling, and prepare for evaluation questions. also optimizing the structure of the readme.
+**AI usage** — used Ai throughout to understand pthread internals (TCB, context switching, lifecycle of a thread), review code for norm compliance and error handling, and prepare for evaluation questions. also optimizing the structure of the Readme.
  

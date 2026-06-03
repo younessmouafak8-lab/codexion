@@ -6,7 +6,7 @@
 /*   By: ymouafak <ymouafak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/28 17:32:40 by ymouafak          #+#    #+#             */
-/*   Updated: 2026/05/19 13:31:45 by ymouafak         ###   ########.fr       */
+/*   Updated: 2026/06/03 11:33:39 by ymouafak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ void	my_usleep(t_coder *coder, int time_ms)
 
 	if (!time_ms)
 	{
-		usleep(51);
+		usleep(1);
 		return ;
 	}
 	start = ft_clock(coder->args->start_time);

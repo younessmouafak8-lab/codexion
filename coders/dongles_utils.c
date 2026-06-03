@@ -6,7 +6,7 @@
 /*   By: ymouafak <ymouafak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/21 15:25:18 by ymouafak          #+#    #+#             */
-/*   Updated: 2026/05/22 12:23:12 by ymouafak         ###   ########.fr       */
+/*   Updated: 2026/06/03 13:14:55 by ymouafak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,7 @@ void	check_dongles(t_coder *coder, t_dongle *first, t_dongle *second)
 		}
 		pthread_mutex_unlock(&first->lock);
 		pthread_mutex_unlock(&second->lock);
-		my_usleep(coder, coder->args->time_tocompile / 100);
+		usleep(300);
 	}
 }
 

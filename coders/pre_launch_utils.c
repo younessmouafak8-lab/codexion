@@ -6,7 +6,7 @@
 /*   By: ymouafak <ymouafak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/01 15:40:36 by ymouafak          #+#    #+#             */
-/*   Updated: 2026/05/21 23:24:25 by ymouafak         ###   ########.fr       */
+/*   Updated: 2026/06/03 09:48:36 by ymouafak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,14 +62,22 @@ int	innit_coders(t_arguments *args, t_coder *coders, t_dongle *dongles)
 {
 	int	i;
 
-	if (init_args_mutexes(args) != 0)
+	if (init_args_mutexes(args))
 		return (-1);
 	i = 0;
 	while (i < args->num_coders)
 	{
-		if (pthread_mutex_init(&dongles[i].lock, NULL)
-			|| pthread_mutex_init(&coders[i].lock_in, NULL))
-			return (cleanup_mutexes(args, coders, dongles, i), -1);
+		if (pthread_mutex_init(&dongles[i].lock, NULL))
+		{
+			cleanup_mutexes(args, coders, dongles, i);
+			return (-1);
+		}
+		if (pthread_mutex_init(&coders[i].lock_in, NULL))
+		{
+			pthread_mutex_destroy(&dongles[i].lock);
+			cleanup_mutexes(args, coders, dongles, i);
+			return (-1);
+		}
 		init_coders_dongles(coders, dongles, args, i);
 		i++;
 	}

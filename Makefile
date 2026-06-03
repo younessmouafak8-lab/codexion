@@ -1,5 +1,5 @@
 NAME = codexion
-C_FLAGS = -Wall -Wextra -Werror -pthread 
+C_FLAGS = -Wall -Wextra -Werror -pthread
 C_HEADER = coders/codexion.h
 RM = rm -rf
 SRCS = coders/main.c coders/ft_atoi.c coders/parsing.c coders/dongles_utils.c coders/monitor_utils.c coders/thread_routine.c \
@@ -11,8 +11,8 @@ all: $(NAME)
 $(NAME) : $(OBJS) $(C_HEADER)
 	cc $(C_FLAGS) $(OBJS) -o $(NAME)
 
-coders/%.o: coders?%.c $(C_HEADER)
-	cc $(C_FLAGS) -c $<
+coders/%.o: coders/%.c $(C_HEADER)
+	cc $(C_FLAGS) -c $< -o $@
 
 clean :
 	$(RM) $(OBJS)
