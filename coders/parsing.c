@@ -6,7 +6,7 @@
 /*   By: ymouafak <ymouafak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/11 18:52:48 by ymouafak          #+#    #+#             */
-/*   Updated: 2026/05/19 11:42:45 by ymouafak         ###   ########.fr       */
+/*   Updated: 2026/06/09 21:35:58 by ymouafak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,8 @@ int	ft_checks(char	*str)
 
 	i = 0;
 	counter = 0;
+	if (!str[i])
+		return (0);
 	while (str[i])
 	{
 		if (str[i] == '-' || str[i] == '+')
@@ -92,7 +94,7 @@ t_arguments	*parsing(char **str)
 		i++;
 	}
 	if (strcmp(str[i], "fifo") && strcmp(str[i], "edf"))
-		return (ft_im_out(args, 1));
+		return (ft_im_out(args, 0));
 	args->scheduler = str[i];
 	if (!double_check(args))
 	{
