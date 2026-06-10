@@ -6,7 +6,7 @@
 /*   By: ymouafak <ymouafak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/27 18:38:39 by ymouafak          #+#    #+#             */
-/*   Updated: 2026/06/09 21:21:48 by ymouafak         ###   ########.fr       */
+/*   Updated: 2026/06/10 11:24:01 by ymouafak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,9 +69,9 @@ int	monitor_routine(t_coder *coders, t_arguments *args, int *done_compiling)
 			(*done_compiling)++;
 		last_compile = coders[i].last_compile;
 		pthread_mutex_unlock(&coders[i].lock_in);
-		if (ft_clock(coders[i].args->start_time)
-			- last_compile >= args->burnout_time
-			&& !(*done_compiling == args->num_coders))
+		if (!(*done_compiling == args->num_coders)
+			&& ft_clock(coders[i].args->start_time)
+			- last_compile >= args->burnout_time)
 		{
 			pthread_mutex_lock(&coders[i].args->lock_compile);
 			printf("%ld %d burned out\n",
